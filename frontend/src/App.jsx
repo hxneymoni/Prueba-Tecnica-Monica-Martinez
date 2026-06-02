@@ -26,9 +26,13 @@ function App() {
     return (
       <div className="app">
         <h1>🚀 SpaceX Launches Dashboard</h1>
-        <p style={{ color: "#4fc3f7", textAlign: "center", marginTop: "40px" }}>
-          Cargando lanzamientos...
-        </p>
+        <div className="loader-container">
+          <div className="rocket-loader">🚀</div>
+          <p className="loader-text">Cargando lanzamientos...</p>
+          <div className="loader-bar">
+            <div className="loader-bar-fill" />
+          </div>
+        </div>
       </div>
     );
   }

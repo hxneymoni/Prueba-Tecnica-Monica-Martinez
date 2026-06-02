@@ -4,6 +4,7 @@ function Table({ data, onSelect }) {
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("todos");
+  const [selectedId, setSelectedId] = useState(null);
 
   const filtered = data.filter((launch) => {
     const matchName = launch.name
@@ -23,6 +24,11 @@ function Table({ data, onSelect }) {
 
     return matchName && matchDate && matchStatus;
   });
+
+  const handleSelect = (launch) => {
+    setSelectedId(launch.id);
+    onSelect(launch);
+  };
 
   return (
     <div className="table-container">
@@ -65,8 +71,8 @@ function Table({ data, onSelect }) {
           {filtered.map((launch) => (
             <tr
               key={launch.id}
-              onClick={() => onSelect(launch)}
-              className="clickable-row"
+              onClick={() => handleSelect(launch)}
+              className={`clickable-row ${selectedId === launch.id ? "selected-row" : ""}`}
             >
               <td>{launch.name}</td>
               <td>{new Date(launch.date_utc).toLocaleDateString()}</td>
