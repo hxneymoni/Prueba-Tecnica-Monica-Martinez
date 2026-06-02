@@ -26,10 +26,14 @@ Dashboard interactivo para visualizar datos de lanzamientos de SpaceX en tiempo 
 
 - Tabla de lanzamientos con filtros por nombre, año y estado
 - Estadísticas en tiempo real: total, exitosos, fallidos y tasa de éxito
+- Animación de contadores en tarjetas de estadísticas
 - Gráfica de barras de lanzamientos por año
+- Gráfica de pastel de éxitos vs fallidos (SVG puro)
 - Modal con detalle expandible al seleccionar un lanzamiento
 - Mapa interactivo con la ubicación del sitio de lanzamiento
 - Exportación a PDF con datos e imagen del lanzamiento
+- Resaltado de fila seleccionada en la tabla
+- Indicador de carga animado
 
 ---
 
@@ -53,7 +57,7 @@ El backend actúa como intermediario entre el frontend y la API pública de Spac
 docker-compose up --build
 ```
 
-4. Abre http://localhost:5173 en tu navegador
+4. Abrir http://localhost:5173 en tu navegador
 
 ### Sin Docker
 
@@ -86,7 +90,7 @@ Se consume la API pública de SpaceX:
 
 ---
 
-## Limitaciones conocidas
+## Limitaciones 
 
 ### Imágenes en el PDF
 Las imágenes de los lanzamientos provienen de Flickr y están protegidas por CORS, lo que impide descargarlas directamente desde el navegador. Se resolvió implementando un endpoint proxy en el backend (`/api/image-proxy`) que descarga la imagen server-side y la retorna como base64 al frontend.
@@ -103,6 +107,19 @@ Algunas imágenes de Flickr tienen restricciones de acceso externo y pueden apar
 
 ## Decisiones técnicas
 
+- **Desarrollo frontend primero:** Se comenzó con el archivo JSON local para desarrollar y probar el frontend de forma rápida sin depender de una API externa. Una vez validada la interfaz, se migró al backend con Express consumiendo la API real de SpaceX. Este enfoque permite iterar rápido en la UI antes de conectar fuentes de datos reales.
 - **Backend como intermediario:** Se optó por tener un backend propio en lugar de consumir la API de SpaceX directamente desde el frontend. Esto permite hacer joins entre múltiples endpoints (lanzamientos + cohetes + plataformas) y resolver CORS de imágenes.
 - **Modal en lugar de página de detalle:** Se eligió un modal para no perder el contexto de la tabla al ver el detalle de un lanzamiento.
-- **Docker Compose:** Permite levantar frontend y backend juntos con un solo comando, evitando problemas de configuración del entorno.
+- **Gráfica de pastel con SVG puro:** En lugar de usar una librería externa, la gráfica de pastel se construyó con SVG nativo.
+
+---
+
+## Extras implementados
+
+Esta prueba no requería Docker ni un backend propio, sin embargo se decidí incluirlos por las siguientes razones:
+
+- **Backend propio:** Permite hacer joins entre múltiples endpoints de la API de SpaceX, resolver problemas de CORS en imágenes y centralizar la lógica de estadísticas. Esto demuestra manejo de orígenes de datos múltiples como se mencionaba como punto extra en las instrucciones.
+
+- **Docker:** Durante la entrevista se mencioné experiencia previa con Docker. Se decidió incluirlo para demostrarlo en práctica y garantizar que el proyecto pueda levantarse en cualquier entorno con un solo comando, sin problemas de dependencias o configuración local.
+
+---
