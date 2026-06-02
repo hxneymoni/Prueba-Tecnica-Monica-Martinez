@@ -9,7 +9,7 @@ function Modal({ launch, onClose }) {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKey);
-    // Bloqueamos el scroll del fondo mientras el modal está abierto
+    // Bloquear el scroll del fondo mientras el modal está abierto
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handleKey);
